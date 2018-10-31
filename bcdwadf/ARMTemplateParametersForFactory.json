@@ -1,1 +1,96 @@
-{}
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "bcdwadf"
+		},
+		"ls_BCConnect_connectionString": {
+			"value": ""
+		},
+		"ls_DB2_Prod_Wood1_password": {
+			"value": ""
+		},
+		"ls_DB2_Test_Wood1_password": {
+			"value": ""
+		},
+		"ls_ods2_connectionString": {
+			"value": ""
+		},
+		"ls_sqldb_connectionString": {
+			"value": ""
+		},
+		"Builder2_json_properties_typeProperties_fileName": {
+			"value": "Builder2.json"
+		},
+		"Builder2_json_properties_typeProperties_folderPath": {
+			"value": "Demo"
+		},
+		"DS_ADLS_properties_typeProperties_fileName": {
+			"value": "@dataset().fileName"
+		},
+		"DS_ADLS_properties_typeProperties_folderPath": {
+			"value": "@dataset().folderPath"
+		},
+		"DealerContact_json_properties_typeProperties_fileName": {
+			"value": "Dealercontact.json"
+		},
+		"DealerContact_json_properties_typeProperties_folderPath": {
+			"value": "Demo"
+		},
+		"JSONCopy_MOMT_Adjustment_type_properties_typeProperties_fileName": {
+			"value": "momt_adjustment_type.json"
+		},
+		"JSONCopy_MOMT_Adjustment_type_properties_typeProperties_folderPath": {
+			"value": "Raw/MOM"
+		},
+		"PostGresKeyColUsage_json_properties_typeProperties_fileName": {
+			"value": "PostGresKeyColUsage.json"
+		},
+		"PostGresKeyColUsage_json_properties_typeProperties_folderPath": {
+			"value": "Demo"
+		},
+		"SourceDataset_q8p_properties_typeProperties_fileName": {
+			"value": "PostGresKeyColUsage.json"
+		},
+		"SourceDataset_q8p_properties_typeProperties_folderPath": {
+			"value": "Demo"
+		},
+		"organization_json_properties_typeProperties_fileName": {
+			"value": "Organization.json"
+		},
+		"organization_json_properties_typeProperties_folderPath": {
+			"value": "Demo"
+		},
+		"ls_DB2_Prod_Wood1_properties_typeProperties_server": {
+			"value": "boslxdb04p:50002"
+		},
+		"ls_DB2_Prod_Wood1_properties_typeProperties_database": {
+			"value": "wood1"
+		},
+		"ls_DB2_Prod_Wood1_properties_typeProperties_username": {
+			"value": "webfocus"
+		},
+		"ls_DB2_Test_Wood1_properties_typeProperties_server": {
+			"value": "boslxdb04t:50001"
+		},
+		"ls_DB2_Test_Wood1_properties_typeProperties_database": {
+			"value": "wood1"
+		},
+		"ls_DB2_Test_Wood1_properties_typeProperties_username": {
+			"value": "webfocus"
+		},
+		"ls_adls_properties_typeProperties_dataLakeStoreUri": {
+			"value": "https://bcdwadls.azuredatalakestore.net/webhdfs/v1"
+		},
+		"ls_adls_properties_typeProperties_tenant": {
+			"value": "3eca6f3f-437a-470d-9c98-872986ee4297"
+		},
+		"ls_adls_properties_typeProperties_subscriptionId": {
+			"value": "2b896190-565d-4f66-9397-92a34afbec85"
+		},
+		"ls_adls_properties_typeProperties_resourceGroupName": {
+			"value": "USWest_2_Data_Mgmt"
+		}
+	}
+}
