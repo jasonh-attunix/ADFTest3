@@ -1,0 +1,131 @@
+{
+	"name": "pipe_Stage",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Data",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "@{pipeline().parameters.SourceFilePath}/@{pipeline().parameters.SourceFileName}"
+					},
+					{
+						"name": "Destination",
+						"value": "@{pipeline().parameters.SinkTableName}"
+					},
+					{
+						"name": "foo",
+						"value": "hehehr"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataLakeStoreSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": {
+							"value": "@pipeline().parameters.SinkWriteBatchSize",
+							"type": "Expression"
+						},
+						"sqlWriterStoredProcedureName": {
+							"value": "@pipeline().parameters.SinkStoredProcedureName",
+							"type": "Expression"
+						},
+						"sqlWriterTableType": {
+							"value": "@pipeline().parameters.SinkTableType",
+							"type": "Expression"
+						},
+						"storedProcedureParameters": {
+							"BatchID": {
+								"type": "Int64",
+								"value": "-1"
+							}
+						}
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ADLS",
+						"type": "DatasetReference",
+						"parameters": {
+							"folderPath": {
+								"value": "@pipeline().parameters.SourceFilePath",
+								"type": "Expression"
+							},
+							"fileName": {
+								"value": "@pipeline().parameters.SourceFileName",
+								"type": "Expression"
+							},
+							"format": "JsonFormat"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQLDB",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableName": {
+								"value": "@pipeline().parameters.SinkTableName",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"BatchId": {
+				"type": "Int",
+				"defaultValue": -1
+			},
+			"SourceFileName": {
+				"type": "String",
+				"defaultValue": "SalesStatus_20181001.json"
+			},
+			"SourceFilePath": {
+				"type": "String",
+				"defaultValue": "Raw\\BCConnect\\SalesStatus"
+			},
+			"SinkWriteBatchSize": {
+				"type": "Int",
+				"defaultValue": 10000
+			},
+			"SinkPreCopyScript": {
+				"type": "String",
+				"defaultValue": "TRUNCATE TABLE BCConnect.Public_SalesStatus"
+			},
+			"SinkStoredProcedureName": {
+				"type": "String",
+				"defaultValue": "[BCConnect].[usp_Public_SalesStatus_Load]"
+			},
+			"SinkTableType": {
+				"type": "String",
+				"defaultValue": "BCConnect.Public_SalesStatus_Type"
+			},
+			"SinkTableName": {
+				"type": "String",
+				"defaultValue": "Source"
+			}
+		},
+		"folder": {
+			"name": "Stage"
+		},
+		"annotations": [
+			"BC Azure DW"
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

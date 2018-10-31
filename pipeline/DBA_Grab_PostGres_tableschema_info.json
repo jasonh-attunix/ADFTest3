@@ -1,0 +1,119 @@
+{
+	"name": "DBA_Grab_PostGres_tableschema_info",
+	"properties": {
+		"activities": [
+			{
+				"name": "Grab_PostGres_info",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "select c.table_catalog\n, c.table_schema\n, c.table_name\n, c.column_name\n, c.ordinal_position\n, c.data_type\n, c.character_maximum_length\n, c.numeric_precision\n, c.numeric_precision_radix\n, c.numeric_scale\n, c.datetime_precision\n, c.udt_name\nfrom \"information_schema\".\"columns\" c\nWHERe c.\"table_schema\" = 'public'"
+					},
+					"sink": {
+						"type": "AzureDataLakeStoreSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "BCConnect",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "JSONCopy_MOMT_Adjustment_type",
+						"type": "DatasetReference",
+						"parameters": {
+							"rootpath": "Demo",
+							"TableName": "PostGres.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "Load_Staging_PostGres_info",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Grab_PostGres_info",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Demo/PostGres.json"
+					},
+					{
+						"name": "Destination",
+						"value": "[Staging].[PostGres_info]"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataLakeStoreSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"table_catalog": "table_catalog",
+							"table_schema": "table_schema",
+							"table_name": "table_name",
+							"column_name": "column_name",
+							"ordinal_position": "ordinal_position",
+							"data_type": "data_type",
+							"character_maximum_length": "character_maximum_length",
+							"numeric_precision": "numeric_precision",
+							"numeric_precision_radix": "numeric_precision_radix",
+							"numeric_scale": "numeric_scale",
+							"datetime_precision": "datetime_precision",
+							"udt_name": "udt_name"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PostGresKeyColUsage_json",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "StageDB_PostGres_info",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Sandbox"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

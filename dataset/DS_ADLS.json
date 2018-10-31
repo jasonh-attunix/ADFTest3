@@ -1,0 +1,45 @@
+{
+	"name": "DS_ADLS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folderPath": {
+				"type": "String",
+				"defaultValue": "Raw\\BCConnect\\Builder"
+			},
+			"fileName": {
+				"type": "String",
+				"defaultValue": "builder_20181001.json"
+			},
+			"format": {
+				"type": "String",
+				"defaultValue": "JsonFormat"
+			}
+		},
+		"folder": {
+			"name": "BC DW"
+		},
+		"annotations": [
+			"BC Connect"
+		],
+		"type": "AzureDataLakeStoreFile",
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat",
+				"filePattern": "setOfObjects"
+			},
+			"fileName": {
+				"value": "@dataset().fileName",
+				"type": "Expression"
+			},
+			"folderPath": {
+				"value": "@dataset().folderPath",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

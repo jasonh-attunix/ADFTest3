@@ -1,0 +1,462 @@
+{
+	"name": "pipe_BCConnectPreStage",
+	"properties": {
+		"description": "Loads data into the Pre-staging area (BCConnect schema) from the ADLS files.",
+		"activities": [
+			{
+				"name": "Copy Data",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Create Audit Log - Started",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "@{pipeline().parameters.SourceTableName}"
+					},
+					{
+						"name": "Destination",
+						"value": "@{pipeline().parameters.SinkFilePath}/@{pipeline().parameters.SinkFileName}"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": {
+							"value": "@pipeline().parameters.SourceReaderQuery",
+							"type": "Expression"
+						}
+					},
+					"sink": {
+						"type": "AzureDataLakeStoreSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_BCConnect",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableName": {
+								"value": "@pipeline().parameters.SourceTableName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ADLS",
+						"type": "DatasetReference",
+						"parameters": {
+							"folderPath": {
+								"value": "@pipeline().parameters.SinkFilePath",
+								"type": "Expression"
+							},
+							"fileName": {
+								"value": "@pipeline().parameters.SinkFileName",
+								"type": "Expression"
+							},
+							"format": "JsonFormat"
+						}
+					}
+				]
+			},
+			{
+				"name": "Create Audit Log - Started",
+				"description": "Create an AuditLog entry with a status of \"Started\", for tracking the execution of each data load.",
+				"type": "Lookup",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SqlSource",
+						"sqlReaderStoredProcedureName": "[CTL].[usp_ETLAuditLog]",
+						"storedProcedureParameters": {
+							"ActivityId": {
+								"type": "String",
+								"value": "1"
+							},
+							"ActivityName": {
+								"type": "String",
+								"value": "Create Audit Log - Started"
+							},
+							"AuditLogID": {
+								"type": "Int64",
+								"value": ""
+							},
+							"ErrorMsg": {
+								"type": "String",
+								"value": ""
+							},
+							"ETLAuditLogId": {
+								"type": "Int64",
+								"value": ""
+							},
+							"ETLBatchID": {
+								"type": "Int64",
+								"value": {
+									"value": "@pipeline().parameters.ETLBatchID",
+									"type": "Expression"
+								}
+							},
+							"ETLControlID": {
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.ETLControlID",
+									"type": "Expression"
+								}
+							},
+							"ETLStartTime": {
+								"type": "DateTime",
+								"value": ""
+							},
+							"LoadStatus": {
+								"type": "String",
+								"value": "Started"
+							},
+							"LogType": {
+								"type": "String",
+								"value": "ADF"
+							},
+							"PipelineName": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								}
+							},
+							"PipelineTriggerType": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().TriggerType",
+									"type": "Expression"
+								}
+							},
+							"RowsInserted": {
+								"type": "Int32",
+								"value": "0"
+							},
+							"RowsUpdated": {
+								"type": "Int32",
+								"value": "0"
+							},
+							"SinkName": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.SinkFileName",
+									"type": "Expression"
+								}
+							},
+							"SourceName": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.SourceTableName",
+									"type": "Expression"
+								}
+							},
+							"SourceSystem": {
+								"type": "String",
+								"value": "BCConnect"
+							}
+						}
+					},
+					"dataset": {
+						"referenceName": "StageDB_PostGres_info",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "AuditLog - Completed",
+				"description": "Update the status of the AuditLog as \"Completed\", to indicate successful completion",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[CTL].[usp_ETLAuditLog]",
+					"storedProcedureParameters": {
+						"ActivityId": {
+							"value": "3",
+							"type": "String"
+						},
+						"ActivityName": {
+							"value": "Load Complete",
+							"type": "String"
+						},
+						"AuditLogID": {
+							"value": "",
+							"type": "Int64"
+						},
+						"ErrorMsg": {
+							"value": "",
+							"type": "String"
+						},
+						"ETLAuditLogId": {
+							"value": "",
+							"type": "Int64"
+						},
+						"ETLBatchID": {
+							"value": {
+								"value": "@pipeline().parameters.ETLBatchID",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						},
+						"ETLControlID": {
+							"value": {
+								"value": "@pipeline().parameters.ETLControlID",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"ETLStartTime": {
+							"value": "",
+							"type": "DateTime"
+						},
+						"LoadStatus": {
+							"value": "Completed",
+							"type": "String"
+						},
+						"LogType": {
+							"value": "ADF",
+							"type": "String"
+						},
+						"PipelineName": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineTriggerType": {
+							"value": {
+								"value": "@pipeline().TriggerType",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RowsInserted": {
+							"value": {
+								"value": "@activity('Copy Data').output.rowsCopied",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RowsUpdated": {
+							"value": "0",
+							"type": "Int32"
+						},
+						"SinkName": {
+							"value": {
+								"value": "@pipeline().parameters.SinkFileName",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"SourceName": {
+							"value": {
+								"value": "@pipeline().parameters.SourceTableName",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"SourceSystem": {
+							"value": "BCConnect",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "AuditLog - Failed",
+				"description": "Update the status of the AuditLog record as \"Failed\"",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy Data",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[CTL].[usp_ETLAuditLog]",
+					"storedProcedureParameters": {
+						"ActivityId": {
+							"value": "4",
+							"type": "String"
+						},
+						"ActivityName": {
+							"value": "AuditLog - Failed",
+							"type": "String"
+						},
+						"AuditLogID": {
+							"value": "",
+							"type": "Int64"
+						},
+						"ErrorMsg": {
+							"value": "",
+							"type": "String"
+						},
+						"ETLAuditLogId": {
+							"value": "",
+							"type": "Int64"
+						},
+						"ETLBatchID": {
+							"value": {
+								"value": "@pipeline().parameters.ETLBatchID",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						},
+						"ETLControlID": {
+							"value": {
+								"value": "@pipeline().parameters.ETLControlID",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"ETLStartTime": {
+							"value": "",
+							"type": "DateTime"
+						},
+						"LoadStatus": {
+							"value": "Failed",
+							"type": "String"
+						},
+						"LogType": {
+							"value": "ADF",
+							"type": "String"
+						},
+						"PipelineName": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineTriggerType": {
+							"value": {
+								"value": "@pipeline().TriggerType",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RowsInserted": {
+							"value": "",
+							"type": "Int32"
+						},
+						"RowsUpdated": {
+							"value": "",
+							"type": "Int32"
+						},
+						"SinkName": {
+							"value": {
+								"value": "@pipeline().parameters.SinkFileName",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"SourceName": {
+							"value": {
+								"value": "@pipeline().parameters.SourceTableName",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"SourceSystem": {
+							"value": "BCConnect",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"SinkFileName": {
+				"type": "String",
+				"defaultValue": "SalesStatus_20181029.json"
+			},
+			"SinkFilePath": {
+				"type": "String",
+				"defaultValue": "Raw\\BCConnect\\SalesStatus"
+			},
+			"SourceReaderQuery": {
+				"type": "String",
+				"defaultValue": "SELECT * From public.salesstatus"
+			},
+			"SourceTableName": {
+				"type": "String",
+				"defaultValue": "\"public\".\"salesstatus\""
+			},
+			"ETLControlID": {
+				"type": "Int",
+				"defaultValue": 1
+			},
+			"ETLBatchID": {
+				"type": "Int",
+				"defaultValue": 1
+			}
+		},
+		"variables": {
+			"AuditLogId": {
+				"type": "String",
+				"defaultValue": "IsAwesome!!!"
+			}
+		},
+		"folder": {
+			"name": "PreStage"
+		},
+		"annotations": [
+			"BC Connect"
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

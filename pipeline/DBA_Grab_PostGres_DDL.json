@@ -1,0 +1,59 @@
+{
+	"name": "DBA_Grab_PostGres_DDL",
+	"properties": {
+		"activities": [
+			{
+				"name": "Grab_PostGres_DDL",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "\"public\".\"builder\""
+					},
+					{
+						"name": "Destination",
+						"value": "@{'Demo'}/@{'Postgres_salesstatus_DDL.txt'}"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "SELECT                                          \n  'CREATE TABLE ' || relname || E'\\n(\\n' ||\n  array_to_string(\n    array_agg(\n      '    ' || column_name || ' ' ||  type || ' '|| not_null\n    )\n    , E',\\n'\n  ) || E'\\n);\\n'\nfrom\n(\n  SELECT \n    c.relname, a.attname AS column_name,\n    pg_catalog.format_type(a.atttypid, a.atttypmod) as type,\n    case \n      when a.attnotnull\n    then 'NOT NULL' \n    else 'NULL' \n    END as not_null \n  FROM pg_class c,\n   pg_attribute a,\n   pg_type t\n   WHERE c.relname = 'bcuserorganizationrole'\n   AND a.attnum > 0\n   AND a.attrelid = c.oid\n   AND a.atttypid = t.oid\n ORDER BY a.attnum\n) as tabledefinition\ngroup by relname;"
+					},
+					"sink": {
+						"type": "AzureDataLakeStoreSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "BCConnect",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "JSONCopy_MOMT_Adjustment_type",
+						"type": "DatasetReference",
+						"parameters": {
+							"rootpath": "Demo",
+							"TableName": "PostGres_bcuserorganizationrole_DDL.txt"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Sandbox"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

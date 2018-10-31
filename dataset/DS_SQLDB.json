@@ -1,0 +1,29 @@
+{
+	"name": "DS_SQLDB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tableName": {
+				"type": "String",
+				"defaultValue": "dbo.Test"
+			}
+		},
+		"folder": {
+			"name": "BC DW"
+		},
+		"annotations": [
+			"BC Connect"
+		],
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"tableName": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

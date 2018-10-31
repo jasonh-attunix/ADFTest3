@@ -1,0 +1,96 @@
+{
+	"name": "LOAD_MOM_MOMT_ADJUSTMENT_TYPE",
+	"properties": {
+		"activities": [
+			{
+				"name": "MOMT_ADJUSTMENT_TYPE_to_json",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "select * from \"MOMT\".\"ADJUSTMENT_TYPE\""
+					},
+					"sink": {
+						"type": "AzureDataLakeStoreSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "MOMT_ADJUSTMENT_TYPE",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "JSONCopy_MOMT_Adjustment_type",
+						"type": "DatasetReference",
+						"parameters": {
+							"rootpath": "Raw\\MOM",
+							"TableName": "MOMT_Adjustment_type.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "CopyFromJsonToSQLDB",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "MOMT_ADJUSTMENT_TYPE_to_json",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataLakeStoreSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "JSONCopy_MOMT_Adjustment_type",
+						"type": "DatasetReference",
+						"parameters": {
+							"rootpath": "Raw/MOM",
+							"TableName": "MOMT_Adjustment_type.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "MOM_MOMT_Adjustment_Type_DB",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Sandbox"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

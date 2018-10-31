@@ -1,0 +1,116 @@
+{
+	"name": "DBA_Grab_PostGres_KeyColUsage_info",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Data1",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "Select * \nfrom \"information_schema\".\"key_column_usage\" \nwhere \"table_schema\" = 'public' \n "
+					},
+					"sink": {
+						"type": "AzureDataLakeStoreSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "BCConnect",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "JSONCopy_MOMT_Adjustment_type",
+						"type": "DatasetReference",
+						"parameters": {
+							"rootpath": "Demo",
+							"TableName": "PostGresKeyColUsage.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "Copy Data2",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy Data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Demo/PostGresKeyColUsage.json"
+					},
+					{
+						"name": "Destination",
+						"value": "[Staging].[PostGres_KeyColUsage_info]"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataLakeStoreSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"constraint_catalog": "constraint_catalog",
+							"constraint_schema": "constraint_schema",
+							"constraint_name": "constraint_name",
+							"table_catalog": "table_catalog",
+							"table_schema": "table_schema",
+							"table_name": "table_name",
+							"column_name": "column_name",
+							"ordinal_position": "ordinal_position",
+							"position_in_unique_constraint": "position_in_unique_constraint"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_q8p",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_q8p",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Sandbox"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

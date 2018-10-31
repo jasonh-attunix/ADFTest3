@@ -1,0 +1,68 @@
+{
+	"name": "SourceDataset_q8p",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureDataLakeStoreFile",
+		"structure": [
+			{
+				"name": "constraint_catalog",
+				"type": "String"
+			},
+			{
+				"name": "constraint_schema",
+				"type": "String"
+			},
+			{
+				"name": "constraint_name",
+				"type": "String"
+			},
+			{
+				"name": "table_catalog",
+				"type": "String"
+			},
+			{
+				"name": "table_schema",
+				"type": "String"
+			},
+			{
+				"name": "table_name",
+				"type": "String"
+			},
+			{
+				"name": "column_name",
+				"type": "String"
+			},
+			{
+				"name": "ordinal_position",
+				"type": "Int64"
+			},
+			{
+				"name": "position_in_unique_constraint",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat",
+				"filePattern": "arrayOfObjects",
+				"jsonPathDefinition": {
+					"constraint_catalog": "$.['constraint_catalog']",
+					"constraint_schema": "$.['constraint_schema']",
+					"constraint_name": "$.['constraint_name']",
+					"table_catalog": "$.['table_catalog']",
+					"table_schema": "$.['table_schema']",
+					"table_name": "$.['table_name']",
+					"column_name": "$.['column_name']",
+					"ordinal_position": "$.['ordinal_position']",
+					"position_in_unique_constraint": "$.['position_in_unique_constraint']"
+				}
+			},
+			"fileName": "PostGresKeyColUsage.json",
+			"folderPath": "Demo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

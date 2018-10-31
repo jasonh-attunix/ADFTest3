@@ -1,0 +1,132 @@
+{
+	"name": "Read_MOMT_CARRIER",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_DB2_Test_Wood1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "RelationalTable",
+		"structure": [
+			{
+				"name": "PS_VENDOR_ID",
+				"type": "String"
+			},
+			{
+				"name": "CARRIER_SCAC",
+				"type": "String"
+			},
+			{
+				"name": "CARRIER_STATUS_CD",
+				"type": "String"
+			},
+			{
+				"name": "CARRIER_CREATE_UID",
+				"type": "String"
+			},
+			{
+				"name": "CARRIER_CREATE_TS",
+				"type": "DateTime"
+			},
+			{
+				"name": "CARRIER_NAME",
+				"type": "String"
+			},
+			{
+				"name": "CONTRACT_FLAG",
+				"type": "String"
+			},
+			{
+				"name": "CONTRACT_EFF_DT",
+				"type": "DateTime"
+			},
+			{
+				"name": "CONTRACT_AUTH_FLAG",
+				"type": "String"
+			},
+			{
+				"name": "CONTRACT_PRFL_FLAG",
+				"type": "String"
+			},
+			{
+				"name": "CURRENCY_CD",
+				"type": "String"
+			},
+			{
+				"name": "W9_FLAG",
+				"type": "String"
+			},
+			{
+				"name": "GNRLLBLTY_EXP_DT",
+				"type": "DateTime"
+			},
+			{
+				"name": "AUTOLBLTY_EXP_DT",
+				"type": "DateTime"
+			},
+			{
+				"name": "CARGO_EXP_DT",
+				"type": "DateTime"
+			},
+			{
+				"name": "WRKRSCMP_EXP_DT",
+				"type": "DateTime"
+			},
+			{
+				"name": "INSURANCE_DED_AMT",
+				"type": "Int32"
+			},
+			{
+				"name": "ADTNL_INSURED_FLAG",
+				"type": "String"
+			},
+			{
+				"name": "TCKLR_COMMENT_TXT",
+				"type": "String"
+			},
+			{
+				"name": "TCKLR_DATE",
+				"type": "DateTime"
+			},
+			{
+				"name": "LAST_UPDT_UID",
+				"type": "String"
+			},
+			{
+				"name": "LAST_UPDT_TS",
+				"type": "DateTime"
+			},
+			{
+				"name": "CARRIER_URL_TXT",
+				"type": "String"
+			},
+			{
+				"name": "MOTOR_CARRIER_NBR",
+				"type": "String"
+			},
+			{
+				"name": "RMT_VNDR_ADDR_SEQ",
+				"type": "Int32"
+			},
+			{
+				"name": "PS_VENDOR_LOC",
+				"type": "String"
+			},
+			{
+				"name": "CARRIER_TYPE_CD",
+				"type": "String"
+			},
+			{
+				"name": "CARRIER_TERMS_CD",
+				"type": "String"
+			},
+			{
+				"name": "ROWCHANGETS",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"tableName": "\"MOMT\".\"CARRIER\""
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

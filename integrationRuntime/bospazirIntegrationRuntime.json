@@ -1,0 +1,7 @@
+{
+	"name": "bospazirIntegrationRuntime",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "On Prem integration runtime"
+	}
+}

@@ -1,0 +1,52 @@
+{
+	"name": "BCConnect_Public_dealercontact",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "dealercontactid",
+				"type": "Int32"
+			},
+			{
+				"name": "contactid",
+				"type": "Int32"
+			},
+			{
+				"name": "dealerid",
+				"type": "Int32"
+			},
+			{
+				"name": "organizationid",
+				"type": "Int32"
+			},
+			{
+				"name": "isdeleted",
+				"type": "String"
+			},
+			{
+				"name": "createdon",
+				"type": "DateTime"
+			},
+			{
+				"name": "createdby",
+				"type": "Int32"
+			},
+			{
+				"name": "modifiedon",
+				"type": "DateTime"
+			},
+			{
+				"name": "modifiedby",
+				"type": "Int32"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[BCConnect].[Public_dealercontact]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

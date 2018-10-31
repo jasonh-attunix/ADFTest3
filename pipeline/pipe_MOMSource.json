@@ -1,0 +1,97 @@
+{
+	"name": "pipe_MOMSource",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Data",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "@{pipeline().parameters.SourceTableName}"
+					},
+					{
+						"name": "Destination",
+						"value": "@{pipeline().parameters.SinkFilePath}/@{pipeline().parameters.SinkFileName}"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": {
+							"value": "@pipeline().parameters.SourceReaderQuery",
+							"type": "Expression"
+						}
+					},
+					"sink": {
+						"type": "AzureDataLakeStoreSink"
+					},
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_MOM",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableName": {
+								"value": "@pipeline().parameters.SourceTableName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ADLS",
+						"type": "DatasetReference",
+						"parameters": {
+							"folderPath": {
+								"value": "@pipeline().parameters.SinkFilePath",
+								"type": "Expression"
+							},
+							"fileName": {
+								"value": "@pipeline().parameters.SinkFileName",
+								"type": "Expression"
+							},
+							"format": "JsonFormat"
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"SinkFileName": {
+				"type": "String",
+				"defaultValue": "MOMP_SOLDTO_20181030.json"
+			},
+			"SinkFilePath": {
+				"type": "String",
+				"defaultValue": "Raw\\MOM"
+			},
+			"SourceReaderQuery": {
+				"type": "String",
+				"defaultValue": "SELECT * from MOMP.SOLDTO"
+			},
+			"SourceTableName": {
+				"type": "String",
+				"defaultValue": "\"MOMP\".\"SOLDTO\""
+			}
+		},
+		"folder": {
+			"name": "Source"
+		},
+		"annotations": [
+			"BC MOM"
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

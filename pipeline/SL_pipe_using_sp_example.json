@@ -1,0 +1,62 @@
+{
+	"name": "SL_pipe_using_sp_example",
+	"properties": {
+		"description": "The @Source in the sp must match a value in a parameter in the pipeline that then matches the table name in the sink\nAlso, have to use all the columns in the user defined table types, otherwise you get the following error:\nActivity Copy Data1 failed: ErrorCode=FailedDbOperation,'Type=Microsoft.DataTransfer.Common.Shared.HybridDeliveryException,Message=A database operation failed with the following error: 'Trying to pass a table-valued parameter with 2 column(s) where the corresponding user-defined table type requires 16 column(s).',Source=,''Type=System.Data.SqlClient.SqlException,Message=Trying to pass a table-valued parameter with 2 column(s) where the corresponding user-defined table type requires 16 column(s).,Source=.Net SqlClient Data Provider,SqlErrorNumber=500,Class=16,ErrorCode=-2146232060,State=1,Errors=[{Class=16,Number=500,State=1,Message=Trying to pass a table-valued parameter with 2 column(s) where the corresponding user-defined table type requires 16 column(s).,},],'",
+		"activities": [
+			{
+				"name": "Copy Data1",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataLakeStoreSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000,
+						"sqlWriterStoredProcedureName": "[zDBA].[usp_Builder_Load_test]",
+						"sqlWriterTableType": ""
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "JSONCopy_MOMT_Adjustment_type",
+						"type": "DatasetReference",
+						"parameters": {
+							"rootpath": "Demo",
+							"TableName": "Builder2.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "Source"
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"SinkTableName": {
+				"type": "String",
+				"defaultValue": "Source"
+			}
+		},
+		"folder": {
+			"name": "Sandbox"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,34 @@
+{
+	"name": "trg_nightly",
+	"properties": {
+		"annotations": [
+			"BCDW"
+		],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pipe_demo",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2018-10-01T15:21:00Z",
+				"timeZone": "UTC",
+				"schedule": {
+					"minutes": [
+						1
+					],
+					"hours": [
+						1
+					]
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"name": "ls_DB2_Prod_Wood1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "Db2",
+		"typeProperties": {
+			"server": "boslxdb04p:50002",
+			"database": "wood1",
+			"authenticationType": "Basic",
+			"username": "webfocus",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2MTRhNTM2ZC0wMTEzLTQzYWMtYWI0MC0wNjZlZWQ1N2M3NmMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "bospazirIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

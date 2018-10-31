@@ -1,0 +1,14 @@
+{
+	"name": "Load_BCConnect_Public_organization",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"tableName": "[BCConnect].[Public_organization]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,61 @@
+{
+	"name": "Load_MOM_MOMT_CARRIER_to_SQLDB",
+	"properties": {
+		"activities": [
+			{
+				"name": "Load_MOM_CARRIER_to_SQLDB",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Demo/Dealercontact.json"
+					},
+					{
+						"name": "Destination",
+						"value": "[Staging].[dealercontact]"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "SELECT PS_VENDOR_ID\n      ,CARRIER_SCAC\n      ,CARRIER_STATUS_CD\n      ,CARRIER_CREATE_UID\n      ,CARRIER_CREATE_TS\n      ,CARRIER_NAME\n      ,CONTRACT_FLAG\n      ,CONTRACT_EFF_DT\n      ,CONTRACT_AUTH_FLAG\n      ,CONTRACT_PRFL_FLAG\n      ,CURRENCY_CD\n      ,W9_FLAG\n      ,GNRLLBLTY_EXP_DT\n      ,AUTOLBLTY_EXP_DT\n      ,CARGO_EXP_DT\n      ,WRKRSCMP_EXP_DT\n      ,INSURANCE_DED_AMT\n      ,ADTNL_INSURED_FLAG\n      ,TCKLR_COMMENT_TXT\n      ,TCKLR_DATE\n      ,LAST_UPDT_UID\n      ,LAST_UPDT_TS\n      ,CARRIER_URL_TXT\n      ,MOTOR_CARRIER_NBR\n      ,RMT_VNDR_ADDR_SEQ\n      ,PS_VENDOR_LOC\n      ,CARRIER_TYPE_CD\n      ,CARRIER_TERMS_CD\n      ,Current_Date AS ROWCHANGETS\n      FROM \"MOMT\".\"CARRIER\""
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000,
+						"preCopyScript": "TRUNCATE TABLE MOM.MOMT_CARRIER"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": "PS_VENDOR_ID: PS_VENDOR_ID, CARRIER_SCAC: CARRIER_SCAC, CARRIER_STATUS_CD: CARRIER_STATUS_CD, CARRIER_CREATE_UID: CARRIER_CREATE_UID, CARRIER_CREATE_TS: CARRIER_CREATE_TS, CARRIER_NAME: CARRIER_NAME, CONTRACT_FLAG: CONTRACT_FLAG, CONTRACT_EFF_DT: CONTRACT_EFF_DT, CONTRACT_AUTH_FLAG: CONTRACT_AUTH_FLAG, CONTRACT_PRFL_FLAG: CONTRACT_PRFL_FLAG, CURRENCY_CD: CURRENCY_CD, W9_FLAG: W9_FLAG, GNRLLBLTY_EXP_DT: GNRLLBLTY_EXP_DT, AUTOLBLTY_EXP_DT: AUTOLBLTY_EXP_DT, CARGO_EXP_DT: CARGO_EXP_DT, WRKRSCMP_EXP_DT: WRKRSCMP_EXP_DT, INSURANCE_DED_AMT: INSURANCE_DED_AMT, ADTNL_INSURED_FLAG: ADTNL_INSURED_FLAG, TCKLR_COMMENT_TXT: TCKLR_COMMENT_TXT, TCKLR_DATE: TCKLR_DATE, LAST_UPDT_UID: LAST_UPDT_UID, LAST_UPDT_TS: LAST_UPDT_TS, CARRIER_URL_TXT: CARRIER_URL_TXT, MOTOR_CARRIER_NBR: MOTOR_CARRIER_NBR, RMT_VNDR_ADDR_SEQ: RMT_VNDR_ADDR_SEQ, PS_VENDOR_LOC: PS_VENDOR_LOC, CARRIER_TYPE_CD: CARRIER_TYPE_CD, CARRIER_TERMS_CD: CARRIER_TERMS_CD, ROWCHANGETS: ROWCHANGETS"
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Read_MOMT_CARRIER",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Load_MOM_MOMT_CARRIER_SQLDB",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Sandbox"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,69 @@
+{
+	"name": "PostGresKeyColUsage_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureDataLakeStoreFile",
+		"structure": [
+			{
+				"name": "table_catalog",
+				"type": "String"
+			},
+			{
+				"name": "table_schema",
+				"type": "String"
+			},
+			{
+				"name": "table_name",
+				"type": "String"
+			},
+			{
+				"name": "column_name",
+				"type": "String"
+			},
+			{
+				"name": "ordinal_position",
+				"type": "Int64"
+			},
+			{
+				"name": "data_type",
+				"type": "String"
+			},
+			{
+				"name": "character_maximum_length",
+				"type": "String"
+			},
+			{
+				"name": "numeric_precision",
+				"type": "Int64"
+			},
+			{
+				"name": "numeric_precision_radix",
+				"type": "Int64"
+			},
+			{
+				"name": "numeric_scale",
+				"type": "Int64"
+			},
+			{
+				"name": "datetime_precision",
+				"type": "String"
+			},
+			{
+				"name": "udt_name",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat",
+				"filePattern": "arrayOfObjects"
+			},
+			"fileName": "PostGresKeyColUsage.json",
+			"folderPath": "Demo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

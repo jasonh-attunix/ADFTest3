@@ -1,0 +1,52 @@
+{
+	"name": "DestinationDataset_q8p",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "constraint_catalog",
+				"type": "String"
+			},
+			{
+				"name": "constraint_schema",
+				"type": "String"
+			},
+			{
+				"name": "constraint_name",
+				"type": "String"
+			},
+			{
+				"name": "table_catalog",
+				"type": "String"
+			},
+			{
+				"name": "table_schema",
+				"type": "String"
+			},
+			{
+				"name": "table_name",
+				"type": "String"
+			},
+			{
+				"name": "column_name",
+				"type": "String"
+			},
+			{
+				"name": "ordinal_position",
+				"type": "Int32"
+			},
+			{
+				"name": "position_in_unique_constraint",
+				"type": "Int32"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[Staging].[PostGres_KeyColUsage_info]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

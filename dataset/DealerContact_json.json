@@ -1,0 +1,68 @@
+{
+	"name": "DealerContact_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureDataLakeStoreFile",
+		"structure": [
+			{
+				"name": "dealercontactid",
+				"type": "Int64"
+			},
+			{
+				"name": "contactid",
+				"type": "Int64"
+			},
+			{
+				"name": "dealerid",
+				"type": "Int64"
+			},
+			{
+				"name": "organizationid",
+				"type": "Int64"
+			},
+			{
+				"name": "isdeleted",
+				"type": "Boolean"
+			},
+			{
+				"name": "createdon",
+				"type": "String"
+			},
+			{
+				"name": "createdby",
+				"type": "Int64"
+			},
+			{
+				"name": "modifiedon",
+				"type": "String"
+			},
+			{
+				"name": "modifiedby",
+				"type": "Int64"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat",
+				"filePattern": "arrayOfObjects",
+				"jsonPathDefinition": {
+					"dealercontactid": "$.['dealercontactid']",
+					"contactid": "$.['contactid']",
+					"dealerid": "$.['dealerid']",
+					"organizationid": "$.['organizationid']",
+					"isdeleted": "$.['isdeleted']",
+					"createdon": "$.['createdon']",
+					"createdby": "$.['createdby']",
+					"modifiedon": "$.['modifiedon']",
+					"modifiedby": "$.['modifiedby']"
+				}
+			},
+			"fileName": "Dealercontact.json",
+			"folderPath": "Demo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

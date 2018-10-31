@@ -1,0 +1,14 @@
+{
+	"name": "BCConnect_Public_builder",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"tableName": "[BCConnect].[Public_builder]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

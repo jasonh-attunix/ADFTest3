@@ -1,0 +1,73 @@
+{
+	"name": "Builder2_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureDataLakeStoreFile",
+		"structure": [
+			{
+				"name": "projectid",
+				"type": "Int64"
+			},
+			{
+				"name": "owningorganizationid",
+				"type": "Int64"
+			},
+			{
+				"name": "builderid",
+				"type": "Int64"
+			},
+			{
+				"name": "projectname",
+				"type": "String"
+			},
+			{
+				"name": "projectnumber",
+				"type": "String"
+			},
+			{
+				"name": "createdon",
+				"type": "String"
+			},
+			{
+				"name": "projectvalue",
+				"type": "String"
+			},
+			{
+				"name": "salesstatusid",
+				"type": "Int64"
+			},
+			{
+				"name": "dealerid",
+				"type": "Int64"
+			},
+			{
+				"name": "modifiedon",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat",
+				"filePattern": "arrayOfObjects",
+				"jsonPathDefinition": {
+					"projectid": "$.['projectid']",
+					"owningorganizationid": "$.['owningorganizationid']",
+					"builderid": "$.['builderid']",
+					"projectname": "$.['projectname']",
+					"projectnumber": "$.['projectnumber']",
+					"createdon": "$.['createdon']",
+					"projectvalue": "$.['projectvalue']",
+					"salesstatusid": "$.['salesstatusid']",
+					"dealerid": "$.['dealerid']",
+					"modifiedon": "$.['modifiedon']"
+				}
+			},
+			"fileName": "Builder2.json",
+			"folderPath": "Demo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

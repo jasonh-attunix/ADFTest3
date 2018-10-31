@@ -1,0 +1,16 @@
+{
+	"name": "ls_ods2",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=bospsqlods2;initial catalog=ods_mom;user id=ods_mom",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI5MGMwYjI2NS00YmY3LTQ3M2ItYWMzOS1lNzJiNzdkODAzNjgiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "bcdwetl",
+			"type": "IntegrationRuntimeReference"
+		},
+		"description": "bosPsqlODS2"
+	}
+}

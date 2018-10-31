@@ -1,0 +1,114 @@
+{
+	"name": "pipe_BCConnectPreStage_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetTableList",
+				"type": "Lookup",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SqlSource",
+						"sqlReaderQuery": "  SELECT * FROM [CTL].[fn_getTableList]('BCCONNECT', 'PreStage', 1)"
+					},
+					"dataset": {
+						"referenceName": "DS_SQLDB",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableName": "dbo.Test"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachTable",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetTableList",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetTableList').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Execute BCConnectSource",
+							"type": "ExecutePipeline",
+							"userProperties": [
+								{
+									"name": "TestProp",
+									"value": "@item().SourceReaderQuery"
+								}
+							],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pipe_BCConnectPreStage",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": false,
+								"parameters": {
+									"SinkFileName": {
+										"value": "@item().SinkFileName",
+										"type": "Expression"
+									},
+									"SinkFilePath": {
+										"value": "@item().SinkFilePath",
+										"type": "Expression"
+									},
+									"SourceReaderQuery": {
+										"value": "@item().SourceReaderQuery",
+										"type": "Expression"
+									},
+									"SourceTableName": {
+										"value": "@item().SourceTableName",
+										"type": "Expression"
+									},
+									"ETLControlID": {
+										"value": "@item().ETLControlID",
+										"type": "Expression"
+									},
+									"ETLBatchID": {
+										"value": "@pipeline().parameters.ETLBatchID",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"ETLBatchID": {
+				"type": "Int",
+				"defaultValue": 100
+			}
+		},
+		"variables": {
+			"TestVar": {
+				"type": "String"
+			},
+			"TestVar2": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "PreStage"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,6 @@
+{
+	"name": "bcconnectintegrationRuntime",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

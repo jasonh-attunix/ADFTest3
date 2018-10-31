@@ -1,0 +1,64 @@
+{
+	"name": "StageDB_PostGres_info",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "table_catalog",
+				"type": "String"
+			},
+			{
+				"name": "table_schema",
+				"type": "String"
+			},
+			{
+				"name": "table_name",
+				"type": "String"
+			},
+			{
+				"name": "column_name",
+				"type": "String"
+			},
+			{
+				"name": "ordinal_position",
+				"type": "Int32"
+			},
+			{
+				"name": "data_type",
+				"type": "String"
+			},
+			{
+				"name": "character_maximum_length",
+				"type": "Int32"
+			},
+			{
+				"name": "numeric_precision",
+				"type": "String"
+			},
+			{
+				"name": "numeric_precision_radix",
+				"type": "String"
+			},
+			{
+				"name": "numeric_scale",
+				"type": "String"
+			},
+			{
+				"name": "datetime_precision",
+				"type": "String"
+			},
+			{
+				"name": "udt_name",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[Staging].[PostGres_info]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

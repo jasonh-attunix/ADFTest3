@@ -1,0 +1,32 @@
+{
+	"name": "JSONCopy_MOMT_Adjustment_type",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"rootpath": {
+				"type": "String",
+				"defaultValue": "Demo"
+			},
+			"TableName": {
+				"type": "String",
+				"defaultValue": "Builder2.json"
+			}
+		},
+		"folder": {
+			"name": "Sandbox"
+		},
+		"type": "AzureDataLakeStoreFile",
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat",
+				"filePattern": "arrayOfObjects"
+			},
+			"fileName": "momt_adjustment_type.json",
+			"folderPath": "Raw/MOM"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

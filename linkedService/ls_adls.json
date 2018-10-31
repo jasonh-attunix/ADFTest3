@@ -1,0 +1,16 @@
+{
+	"name": "ls_adls",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [
+			"BC Azure DW"
+		],
+		"type": "AzureDataLakeStore",
+		"typeProperties": {
+			"dataLakeStoreUri": "https://bcdwadls.azuredatalakestore.net/webhdfs/v1",
+			"tenant": "3eca6f3f-437a-470d-9c98-872986ee4297",
+			"subscriptionId": "2b896190-565d-4f66-9397-92a34afbec85",
+			"resourceGroupName": "USWest_2_Data_Mgmt"
+		}
+	}
+}

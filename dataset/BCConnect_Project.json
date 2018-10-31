@@ -1,0 +1,56 @@
+{
+	"name": "BCConnect_Project",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "ProjectId",
+				"type": "Int32"
+			},
+			{
+				"name": "ProjectName",
+				"type": "String"
+			},
+			{
+				"name": "ProjectNumber",
+				"type": "String"
+			},
+			{
+				"name": "DealerId",
+				"type": "Int32"
+			},
+			{
+				"name": "BuilderId",
+				"type": "Int32"
+			},
+			{
+				"name": "OrganizationId",
+				"type": "Int32"
+			},
+			{
+				"name": "SalesStatusId",
+				"type": "Int32"
+			},
+			{
+				"name": "CreatedDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "ProjectValue",
+				"type": "Decimal"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[BCConnect].[Project]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

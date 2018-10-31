@@ -1,0 +1,23 @@
+{
+	"name": "BCConnect",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_BCConnect",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"TableName": {
+				"type": "String",
+				"defaultValue": "organization"
+			}
+		},
+		"type": "RelationalTable",
+		"typeProperties": {
+			"tableName": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

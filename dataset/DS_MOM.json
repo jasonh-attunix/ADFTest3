@@ -1,0 +1,23 @@
+{
+	"name": "DS_MOM",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_DB2_Prod_Wood1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tableName": {
+				"type": "String",
+				"defaultValue": "\"MOMP\".\"SOLDTO\""
+			}
+		},
+		"type": "RelationalTable",
+		"typeProperties": {
+			"tableName": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

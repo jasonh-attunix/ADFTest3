@@ -1,0 +1,18 @@
+{
+	"name": "ls_BCConnect",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [
+			"BC Connect"
+		],
+		"type": "PostgreSql",
+		"typeProperties": {
+			"connectionString": "host=zeus.readonly-db.bcconnect.com;port=5432;database=bcconnect;uid=reportinguser;encryptionmethod=0",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2NzBmMjRiMi02ZjNkLTQ0NzUtYjFhNS0xZmM1MzFkNWUzZjQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "bcconnectintegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

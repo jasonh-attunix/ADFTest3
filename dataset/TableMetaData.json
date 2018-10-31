@@ -1,0 +1,14 @@
+{
+	"name": "TableMetaData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_ods2",
+			"type": "LinkedServiceReference"
+		},
+		"type": "SqlServerTable",
+		"typeProperties": {
+			"tableName": "[dbo].[ADDRESS]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

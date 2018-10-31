@@ -1,0 +1,29 @@
+{
+	"name": "DS_BCConnect",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_BCConnect",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tableName": {
+				"type": "String",
+				"defaultValue": "\"public\".\"project\""
+			}
+		},
+		"folder": {
+			"name": "BC Connect"
+		},
+		"annotations": [
+			"BC Connect"
+		],
+		"type": "RelationalTable",
+		"typeProperties": {
+			"tableName": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

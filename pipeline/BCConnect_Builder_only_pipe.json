@@ -1,0 +1,101 @@
+{
+	"name": "BCConnect_Builder_only_pipe",
+	"properties": {
+		"description": "Pulls from Postgres into json, loads from json to Staging",
+		"activities": [
+			{
+				"name": "Load_PostGres_Builder_to_json",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "select * from \"public\".\"builder\""
+					},
+					"sink": {
+						"type": "AzureDataLakeStoreSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "BCConnect",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "builder"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "JSONCopy_MOMT_Adjustment_type",
+						"type": "DatasetReference",
+						"parameters": {
+							"rootpath": "Demo",
+							"TableName": "builder"
+						}
+					}
+				]
+			},
+			{
+				"name": "pull_builder_json_to_staging",
+				"description": "Reads builder.json, executes sp and loads staging.builder",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Load_PostGres_Builder_to_json",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataLakeStoreSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "JSONCopy_MOMT_Adjustment_type",
+						"type": "DatasetReference",
+						"parameters": {
+							"rootpath": "Demo",
+							"TableName": "builder.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "BCConnect_Public_builder",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Sandbox"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
